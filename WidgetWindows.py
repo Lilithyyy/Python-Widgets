@@ -4,11 +4,11 @@ w, h = 400,300 #set width and height for all windows
 
 #set name and descriptions for each widget (aby som to nemusela hladat v kazdej definicii ale mohla to mat pokope a popripade prepisat) 
 widget_info = [
-    ["Radiobutton", "This is the Radiobutton widget. All the radiobuttons are linked together through a variable called 'v'. When you select one of the radiobuttons, the value of 'v' changes to the value assigned to that specific radiobutton. In this example, when you click on the canvas, it checks the value of 'v' and draws the corresponding shape (circle, square, or line) at the clicked position."],
+    ["Radiobutton", "This is a Radiobutton. All the radiobuttons are linked together through a variable called 'v'. When you select one of the radiobuttons, the value of 'v' changes to the value assigned to that specific radiobutton. In this example, when you click on the canvas, it checks the value of 'v' and draws the corresponding shape (circle, square, or line) at the clicked position."],
     ["Checkbutton", ""],
-    ["Scale", ""],
+    ["Scale", "This is a Scale. You can set the values of the scale to a variable you can use later for coordinate changes or functions."],
     ["Spinbox", ""],
-    ["Listbox", "This is a listbox. You can bind a listbox through buttons and functions, get the contents of the listbox and so on."],
+    ["Listbox", "This is a Listbox. You can bind a listbox through buttons and functions, get the contents of the listbox and so on."],
     ["Combobox", ""],
 ]
 
@@ -76,13 +76,57 @@ def open_w2():
     canvas2.pack()
 
 def open_w3():
-    global w, h
+    global w, h, rx, ry
     
+    rx, ry = 10, 10
+    x, y = w//2-20, h//2-50
+
     widget3_win = tk.Toplevel(root)
     widget3_win.title(widget_info[2][0])
+    widget3_win.geometry(f"{w}x{h}")
+    widget3_win.resizable(False, False)
 
-    canvas3 = tk.Canvas(widget3_win, width=w, height=h, bg="white")
-    canvas3.pack()
+    instructions_frame = tk.Frame(widget3_win)
+    instructions_frame.pack(side="top", fill="x")
+
+    description_frame = tk.Frame(widget3_win)
+    description_frame.pack(side="bottom", fill="x", pady=5, expand=True)   
+
+    canvas_frame = tk.Frame(widget3_win)
+    canvas_frame.pack(expand=False, pady=5, fill="both") 
+
+    canvas3 = tk.Canvas(canvas_frame, width=w, height=h, bg="#EDC1FF")
+    canvas3.pack(fill="both")
+
+    canvas3.create_oval(x-rx, y-ry, x+rx, y+ry, width=2, outline="#c37aff", tag='oval')
+
+    def changex(event):
+        global rx
+        rx = scalex.get()
+        redraw()
+
+    def changey(event):
+        global ry
+        ry = scaley.get()
+        redraw()
+
+    def redraw():
+        canvas3.coords('oval',[x-rx, y-ry, x+rx, y+ry])
+
+    instructions = tk.Label(instructions_frame, text="Move the scales to adjust the size of the circle")
+    instructions.pack(side="top", expand=True)
+
+    scalex = tk.Scale(canvas_frame, from_=10, to=w//2, orient="horizontal", length=w, command=changex)
+    scaley = tk.Scale(canvas_frame, from_ =10, to= y, orient="vertical", command=changey)
+
+    description = tk.Label(description_frame, wraplength=w, text=widget_info[2][1])
+    description.pack(side="bottom", expand=True)
+
+    scalex.place(x = 0, y = h - 115)
+    scalex.set(rx)
+
+    scaley.place(x = w - 40, y= 0, height=h-100)
+    scaley.set(ry)
 
 def open_w4():
     global w, h
