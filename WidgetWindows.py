@@ -5,7 +5,7 @@ w, h = 400,300 #set width and height for all windows
 #set name and descriptions for each widget (aby som to nemusela hladat v kazdej definicii ale mohla to mat pokope a popripade prepisat) 
 widget_info = [
     ["Radiobutton", "This is a Radiobutton. All the radiobuttons are linked together through a variable called 'v'. When you select one of the radiobuttons, the value of 'v' changes to the value assigned to that specific radiobutton. In this example, when you click on the canvas, it checks the value of 'v' and draws the corresponding shape (circle, square, or line) at the clicked position."],
-    ["Checkbutton", ""],
+    ["Checkbutton", "This is a Checkbox. You can set off and on values of the checkboxes and work with them further in functions."],
     ["Scale", "This is a Scale. You can set the values of the scale to a variable you can use later for coordinate changes or functions."],
     ["Spinbox", ""],
     ["Listbox", "This is a Listbox. You can bind a listbox through buttons and functions, get the contents of the listbox and so on."],
@@ -71,8 +71,42 @@ def open_w2():
     
     widget2_win = tk.Toplevel(root)
     widget2_win.title(widget_info[1][0])
+    widget2_win.geometry(f"{w}x{h}")
+    widget2_win.resizable(False, False)
 
-    canvas2 = tk.Canvas(widget2_win, width=w, height=h, bg="white")
+    instructions_frame = tk.Frame(widget2_win)
+    instructions_frame.pack(side="top", fill="x")
+
+    description_frame = tk.Frame(widget2_win)
+    description_frame.pack(side="bottom", fill="x", pady=5, expand=True)   
+
+    canvas_frame = tk.Frame(widget2_win)
+    canvas_frame.pack(expand=False, pady=5, fill="both")
+
+    instructions = tk.Label(instructions_frame, text="Check the boxes to set the visibility of objects")
+    instructions.pack(side="top")
+
+    description = tk.Label(description_frame, text=widget_info[1][1], wraplength=w, pady = 10)
+    description.pack(side="bottom")
+
+    def draw():
+        canvas2.delete('all')
+
+        if object1.get() == True:
+            canvas2.create_oval(30, 30, 40, 40, tag = "oval")
+        
+        if object2.get() == True:
+            canvas2.create_rectangle(30, 50, 40, 60, tag="square")
+
+    object1 = tk.BooleanVar()
+    checkbutton1 = tk.Checkbutton(instructions_frame, text="circle", onvalue=True, offvalue=False, variable = object1, command=draw)
+    object2 = tk.BooleanVar()
+    checkbutton2 = tk.Checkbutton(instructions_frame, text="rectangle", onvalue=True, offvalue=False, variable= object2, command=draw)
+
+    checkbutton1.pack(side="bottom")
+    checkbutton2.pack(side="bottom")
+
+    canvas2 = tk.Canvas(canvas_frame, width=w, height=h, bg="#EDC1FF")
     canvas2.pack()
 
 def open_w3():
@@ -206,7 +240,7 @@ menu_bar.add_cascade(label="Design", menu=options_menu)
 #list of functions to get rid of manually copypasting info...
 open_functions = [open_w1, open_w2, open_w3, open_w4, open_w5, open_w6]
 
-for i in range(6):
+for i in range(len(open_functions)):
     options_menu.add_command(label=widget_info[i][0], command = open_functions[i])
 
 #main canvas in root
