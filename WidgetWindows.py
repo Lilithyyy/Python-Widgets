@@ -2,25 +2,25 @@ import tkinter as tk
 
 w, h = 400,300 #set width and height for all windows
 
-#set descriptions for each widget (aby som to nemusela hladat v kazdej definicii ale mohla to mat pokope a popripade prepisat)
-labeldecriptions = [
-    "This is the Radiobutton widget. All the radiobuttons are linked together through a variable called 'v'. When you select one of the radiobuttons, the value of 'v' changes to the value assigned to that specific radiobutton. In this example, when you click on the canvas, it checks the value of 'v' and draws the corresponding shape (circle, square, or line) at the clicked position.",
-    "",
-    "",
-    "",
-    "",
-    "",
+#set name and descriptions for each widget (aby som to nemusela hladat v kazdej definicii ale mohla to mat pokope a popripade prepisat) 
+widget_info = [
+    ["Radiobutton", "This is the Radiobutton widget. All the radiobuttons are linked together through a variable called 'v'. When you select one of the radiobuttons, the value of 'v' changes to the value assigned to that specific radiobutton. In this example, when you click on the canvas, it checks the value of 'v' and draws the corresponding shape (circle, square, or line) at the clicked position."],
+    ["Checkbutton", ""],
+    ["Scale", ""],
+    ["Spinbox", ""],
+    ["Listbox", "This is a listbox. You can bind a listbox through buttons and functions, get the contents of the listbox and so on."],
+    ["Combobox", ""],
 ]
 
 def open_w1():
-    global w, h, labeldecriptions
+    global w, h
     
     #holds values for radiobuttons
     v = tk.IntVar()
     
     #opens new window
     widget1_win = tk.Toplevel(root)
-    widget1_win.title("Radiobutton")
+    widget1_win.title(widget_info[0][0])
     widget1_win.geometry(f"{w}x{h}")
     widget1_win.resizable(False, False)
 
@@ -38,9 +38,9 @@ def open_w1():
     canvas1 = tk.Canvas(canvas_frame, bg="#EDC1FF")
     canvas1.pack(fill="both")
 
-    #vrchny frame
+    #bottom frame
     instruction = tk.Label(instructions_frame, text="Select a shape:", font="Arial 10 bold")
-    instruction.pack(side="left", padx=0, pady=5)
+    instruction.pack(side="left", padx=5, pady=5)
 
     radiobutton1 = tk.Radiobutton(instructions_frame, text='Circle', variable=v, value=1)
     radiobutton1.pack(side="right", padx=0, pady=5)
@@ -49,9 +49,9 @@ def open_w1():
     radiobutton3 = tk.Radiobutton(instructions_frame, text='Line', variable=v, value=3)
     radiobutton3.pack(side="right", padx=0, pady=5)
 
-    #spodny frame
-    description = tk.Label(description_frame, text = labeldecriptions[0], wraplength=w)
-    description.pack(side="bottom", pady=5)
+    #top frame
+    description = tk.Label(description_frame, text = widget_info[0][1], wraplength=w)
+    description.pack(side="bottom", pady=5, padx=5)
 
     #function for drawing shapes (viem, ze sme match este nerobili, ale chcela som to skusit)
     def on_click(click):
@@ -70,7 +70,7 @@ def open_w2():
     global w, h
     
     widget2_win = tk.Toplevel(root)
-    widget2_win.title("Widget 2")
+    widget2_win.title(widget_info[1][0])
 
     canvas2 = tk.Canvas(widget2_win, width=w, height=h, bg="white")
     canvas2.pack()
@@ -79,7 +79,7 @@ def open_w3():
     global w, h
     
     widget3_win = tk.Toplevel(root)
-    widget3_win.title("Widget 3")
+    widget3_win.title(widget_info[2][0])
 
     canvas3 = tk.Canvas(widget3_win, width=w, height=h, bg="white")
     canvas3.pack()
@@ -88,7 +88,7 @@ def open_w4():
     global w, h
     
     widget4_win = tk.Toplevel(root)
-    widget4_win.title("Widget 4")
+    widget4_win.title(widget_info[3][0])
 
     canvas4 = tk.Canvas(widget4_win, width=w, height=h, bg="white")
     canvas4.pack()
@@ -96,21 +96,58 @@ def open_w4():
 def open_w5():
     global w, h
     
-    widget5_win = tk.Toplevel(root)
-    widget5_win.title("Widget 5")
+    #a list of colors in our lsit
+    colors = ['red', 'green', 'blue', 'white', 'yellow', 'orange', 'pink']
 
-    canvas5 = tk.Canvas(widget5_win, width=w, height=h, bg="white")
-    canvas5.pack()
+    widget5_win = tk.Toplevel(root)
+    widget5_win.title(widget_info[4][0])
+    widget5_win.geometry(f"{w}x{h}")
+    widget5_win.resizable(False, False)
+
+    #copy pasted frames, every def uses the same instructions and description frames...
+    instructions_frame = tk.Frame(widget5_win)
+    instructions_frame.pack(side="top", fill="x")
+
+    description_frame = tk.Frame(widget5_win)
+    description_frame.pack(side="bottom", fill="x", pady=5, expand=True)   
+
+    canvas_frame = tk.Frame(widget5_win)
+    canvas_frame.pack(expand=False, pady=5, fill="both") 
+
+    canvas5 = tk.Canvas(canvas_frame, width=w, height=h, bg="#EDC1FF")
+    canvas5.pack(fill="both")
+
+    instructions = tk.Label(instructions_frame, text="Double click on a color to change it")
+    instructions.pack(side="top", pady=5)
+
+    #wraplength is used for cutting text into pieces so it can fit the parent frame
+    description = tk.Label(description_frame, text=widget_info[4][1], wraplength=w)
+    description.pack(fill="x", pady=5, padx=5)
+
+    #create a listbox
+    listbox = tk.Listbox(instructions_frame)
+    listbox.pack(fill="both", pady=5, padx=5)
+
+    for color in colors:
+        listbox.insert('end', color)
+
+    #linking the listbox with functions
+    def recolor(event):
+        selected = listbox.curselection()
+        canvas5['bg'] = listbox.get(selected)
+
+    listbox.bind('<Double-Button-1>', recolor)
 
 def open_w6():
     global w, h
     
     widget6_win = tk.Toplevel(root)
-    widget6_win.title("Widget 6")
+    widget6_win.title(widget_info[5][0])
 
     canvas6 = tk.Canvas(widget6_win, width=w, height=h, bg="white")
     canvas6.pack()
 
+#main window
 root = tk.Tk()
 root.title("Main Window")
 root.geometry(f"{w}x{h}")
@@ -122,12 +159,11 @@ root.config(menu=menu_bar)
 options_menu = tk.Menu(menu_bar, tearoff=0)
 menu_bar.add_cascade(label="Design", menu=options_menu)
 
-options_menu.add_command(label="Radiobutton", command = open_w1)
-options_menu.add_command(label="Widget 2", command = open_w2)
-options_menu.add_command(label="Widget 3", command = open_w3)
-options_menu.add_command(label="Widget 4", command = open_w4)
-options_menu.add_command(label="Widget 5", command = open_w5)
-options_menu.add_command(label="Widget 6", command = open_w6)
+#list of functions to get rid of manually copypasting info...
+open_functions = [open_w1, open_w2, open_w3, open_w4, open_w5, open_w6]
+
+for i in range(6):
+    options_menu.add_command(label=widget_info[i][0], command = open_functions[i])
 
 #main canvas in root
 canvas_main = tk.Canvas(root, width=w, height=h, bg="#EDC1FF")
