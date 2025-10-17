@@ -188,7 +188,7 @@ def open_w4():
         value = int(spinbox.get())
         canvas4['bg'] = colors[value]
 
-    description = tk.Label(description_frame, text=widget_info[3][1])
+    description = tk.Label(description_frame, text=widget_info[3][1], wraplength=w)
     description.pack()
 
     spinbox = tk.Spinbox(instructions_frame, from_ = 0, to=2, width=10, command=on_spinbox_change)
