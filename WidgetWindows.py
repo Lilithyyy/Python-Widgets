@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import ttk
 
 w, h = 400,300 #set width and height for all windows
 
@@ -7,9 +8,9 @@ widget_info = [
     ["Radiobutton", "This is a Radiobutton. All the radiobuttons are linked together through a variable called 'v'. When you select one of the radiobuttons, the value of 'v' changes to the value assigned to that specific radiobutton. In this example, when you click on the canvas, it checks the value of 'v' and draws the corresponding shape (circle, square, or line) at the clicked position."],
     ["Checkbutton", "This is a Checkbox. You can set off and on values of the checkboxes and work with them further in functions."],
     ["Scale", "This is a Scale. You can set the values of the scale to a variable you can use later for coordinate changes or functions."],
-    ["Spinbox", "This is a spinbox. You can set the minimum and maximum value and change what happens upon selecting each one with functions."],
+    ["Spinbox", "This is a Spinbox. You can set the minimum and maximum value and change what happens upon selecting each one with functions."],
     ["Listbox", "This is a Listbox. You can bind a listbox through buttons and functions, get the contents of the listbox and so on."],
-    ["Combobox", ""],
+    ["Combobox", "This is a Combobox. You can add values to the dropdown menu and open it with the arrow down (V) next to it"],
 ]
 
 def open_w1():
@@ -179,7 +180,7 @@ def open_w4():
     canvas_frame = tk.Frame(widget4_win)
     canvas_frame.pack(expand=False, pady=5, fill="both") 
 
-    canvas4 = tk.Canvas(canvas_frame, width=w, height=h, bg="white")
+    canvas4 = tk.Canvas(canvas_frame, width=w, height=h, bg="#EDC1FF")
     canvas4.pack()
 
     colors = ['red', 'green', 'blue']
@@ -245,9 +246,35 @@ def open_w6():
     
     widget6_win = tk.Toplevel(root)
     widget6_win.title(widget_info[5][0])
+    widget6_win.geometry(f"{w}x{h}")
+    widget6_win.resizable(False, False)
 
-    canvas6 = tk.Canvas(widget6_win, width=w, height=h, bg="white")
+    instructions_frame = tk.Frame(widget6_win)
+    instructions_frame.pack(side="top", fill="x")
+
+    description_frame = tk.Frame(widget6_win)
+    description_frame.pack(side="bottom", fill="x", pady=5, expand=True)   
+
+    canvas_frame = tk.Frame(widget6_win)
+    canvas_frame.pack(expand=False, pady=5, fill="both") 
+
+    canvas6 = tk.Canvas(canvas_frame, width=w, height=h, bg="#EDC1FF")
     canvas6.pack()
+
+    instructions = tk.Label(instructions_frame, text="Please pick a month you want:")
+    instructions.pack(side="left")
+
+    v = tk.StringVar()
+    monthchosen = ttk.Combobox(instructions_frame, width=20, textvariable=v)
+
+    monthchosen['values'] = (' January', ' February',' March',' April',' May',' June',' July',' August',' September',' October',' November',' December')
+
+    def reprint(event):
+        canvas6.delete('all')
+        canvas6.create_text(50, 100, text=monthchosen.get(), anchor="center")
+
+    monthchosen.pack()
+    monthchosen.bind('<Button-1>', reprint)
 
 #main window
 root = tk.Tk()
