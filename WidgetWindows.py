@@ -7,7 +7,7 @@ widget_info = [
     ["Radiobutton", "This is a Radiobutton. All the radiobuttons are linked together through a variable called 'v'. When you select one of the radiobuttons, the value of 'v' changes to the value assigned to that specific radiobutton. In this example, when you click on the canvas, it checks the value of 'v' and draws the corresponding shape (circle, square, or line) at the clicked position."],
     ["Checkbutton", "This is a Checkbox. You can set off and on values of the checkboxes and work with them further in functions."],
     ["Scale", "This is a Scale. You can set the values of the scale to a variable you can use later for coordinate changes or functions."],
-    ["Spinbox", ""],
+    ["Spinbox", "This is a spinbox. You can set the minimum and maximum value and change what happens upon selecting each one with functions."],
     ["Listbox", "This is a Listbox. You can bind a listbox through buttons and functions, get the contents of the listbox and so on."],
     ["Combobox", ""],
 ]
@@ -167,9 +167,33 @@ def open_w4():
     
     widget4_win = tk.Toplevel(root)
     widget4_win.title(widget_info[3][0])
+    widget4_win.geometry(f"{w}x{h}")
+    widget4_win.resizable(False, False)
 
-    canvas4 = tk.Canvas(widget4_win, width=w, height=h, bg="white")
+    instructions_frame = tk.Frame(widget4_win)
+    instructions_frame.pack(side="top", fill="x")
+
+    description_frame = tk.Frame(widget4_win)
+    description_frame.pack(side="bottom", fill="x", pady=5, expand=True)   
+
+    canvas_frame = tk.Frame(widget4_win)
+    canvas_frame.pack(expand=False, pady=5, fill="both") 
+
+    canvas4 = tk.Canvas(canvas_frame, width=w, height=h, bg="white")
     canvas4.pack()
+
+    colors = ['red', 'green', 'blue']
+
+    def on_spinbox_change():
+        value = int(spinbox.get())
+        canvas4['bg'] = colors[value]
+
+    description = tk.Label(description_frame, text=widget_info[3][1])
+    description.pack()
+
+    spinbox = tk.Spinbox(instructions_frame, from_ = 0, to=2, width=10, command=on_spinbox_change)
+    spinbox.pack()
+
 
 def open_w5():
     global w, h
@@ -182,7 +206,7 @@ def open_w5():
     widget5_win.geometry(f"{w}x{h}")
     widget5_win.resizable(False, False)
 
-    #copy pasted frames, every def uses the same instructions and description frames...
+    #copy pasted frames, every def uses the same ones...
     instructions_frame = tk.Frame(widget5_win)
     instructions_frame.pack(side="top", fill="x")
 
