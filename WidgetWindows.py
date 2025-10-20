@@ -264,6 +264,9 @@ def open_w6():
     instructions = tk.Label(instructions_frame, text="Please pick a month you want:")
     instructions.pack(side="left")
 
+    description = tk.Label(description_frame, text = widget_info[5][1], wraplength=w)
+    description.pack()
+
     v = tk.StringVar()
     monthchosen = ttk.Combobox(instructions_frame, width=20, textvariable=v)
 
